@@ -2,38 +2,36 @@
 {
     public class ProductService
     {
-        static readonly List<Entities.Product> _Products = new List<Entities.Product>();
         public List<Entities.Product> GetService()
         {
-            return _Products;
+            return Data.DataContextManager.Lists._ProductsList;
         }
         public Entities.Product GetByIdService(int id)
         {
             Entities.Product product;
-            product = _Products.Find(x => x.Id == id);
+            product = Data.DataContextManager.Lists._ProductsList.Find(x => x.Id == id);
             return product;
         }
-        public bool PostService(Entities.Product product)
+        public bool AddProduct(Entities.Product product)
         {
-            _Products.Add(product);
-            if (_Products.Find(x => x.Id == product.Id) != null)
+            Data.DataContextManager.Lists._ProductsList.Add(product);
+            if (Data.DataContextManager.Lists._ProductsList.Find(x => x.Id == product.Id) != null)
                 return true;
             return false;
         }
         public bool DeleteByIdService(int id)
         {
-            if (_Products == null) return false;
-            Entities.Product product = _Products.Find(x => x.Id == id);
+            if (Data.DataContextManager.Lists._ProductsList == null) return false;
+            Entities.Product product = Data.DataContextManager.Lists._ProductsList.Find(x => x.Id == id);
             if (product == null) return false;
-            _Products.Remove(product);
+            Data.DataContextManager.Lists._ProductsList.Remove(product);
             return true;
         }
-        public bool PutService(int id, Entities.Product p)
+        public bool UpdateProduct(int id, Entities.Product p)
         {
-            Entities.Product product = _Products.Find(x => x.Id == id);
-            if (product == null) return false;
-            _Products.Remove(product);
-            _Products.Add(p);
+            int product = Data.DataContextManager.Lists._ProductsList.FindIndex(x => x.Id == id);
+            if (product == -1) return false;
+            Data.DataContextManager.Lists._ProductsList[product]=p;
             return true;
         }
     }

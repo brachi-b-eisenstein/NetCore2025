@@ -12,46 +12,42 @@ namespace MishnatYosef.Controllers
 
         // GET: api/<ProductController>
         [HttpGet]
-        public ActionResult<List<Entities.Product>> Get()
+        public ActionResult Get()
         {
             List<Entities.Product> products = _Products.GetService();
-            if (products == null)
-            {
-                return NotFound();
-            }
             return Ok(products);
         }
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public ActionResult<Entities.Product> Get(int id)
+        public ActionResult Get(int id)
         {
+            if (id < 0) return BadRequest();
             Entities.Product product = _Products.GetByIdService(id);
             if (product == null) { return NotFound(); }
-            return Ok(product);
-        }
+            return Ok(product);        }
 
         // POST api/<CustomerController>
         [HttpPost]
-        public ActionResult<int> Post([FromBody] Entities.Product value)
+        public ActionResult Post([FromBody] Entities.Product value)
         {
-            if (_Products.PostService(value))
+            if (_Products.AddProduct(value))
                 return Ok(true);
             return Ok(false);
         }
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public ActionResult<int> Put(int id, [FromBody] Entities.Product p)
+        public ActionResult Put(int id, [FromBody] Entities.Product p)
         {
-            if (_Products.PutService(id, p))
+            if (_Products.UpdateProduct(id, p))
                 return Ok(true);
             return Ok(false);
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public ActionResult<int> Delete(int id)
+        public ActionResult Delete(int id)
         {
             if (_Products.DeleteByIdService(id))
                 return Ok(true);

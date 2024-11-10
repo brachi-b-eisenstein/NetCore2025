@@ -3,38 +3,36 @@ namespace MishnatYosef.Services
 {
     public class SellService
     {
-        static readonly List<Entities.Sell> _Sells = new List<Entities.Sell>();
         public List<Entities.Sell> GetService()
         {
-            return _Sells;
+            return Data.DataContextManager.Lists._SellsList;
         }
         public Entities.Sell GetByIdService(int id)
         {
             Entities.Sell sell;
-            sell = _Sells.Find(x => x.Id == id);
+            sell = Data.DataContextManager.Lists._SellsList.Find(x => x.Id == id);
             return sell;
         }
-        public bool PostService(Entities.Sell sell)
+        public bool AddSell(Entities.Sell sell)
         {
-            _Sells.Add(sell);
-            if (_Sells.Find(x => x.Id == sell.Id) != null)
+            Data.DataContextManager.Lists._SellsList.Add(sell);
+            if (Data.DataContextManager.Lists._SellsList.Find(x => x.Id == sell.Id) != null)
                 return true;
             return false;
         }
         public bool DeleteByIdService(int id)
         {
-            if (_Sells == null) return false;
-            Entities.Sell sell = _Sells.Find(x => x.Id == id);
+            if (Data.DataContextManager.Lists._SellsList == null) return false;
+            Entities.Sell sell = Data.DataContextManager.Lists._SellsList.Find(x => x.Id == id);
             if (sell == null) return false;
-            _Sells.Remove(sell);
+            Data.DataContextManager.Lists._SellsList.Remove(sell);
             return true;
         }
-        public bool PutService(int id, Entities.Sell s)
+        public bool UpdateCustomer(int id, Entities.Sell s)
         {
-            Entities.Sell sell = _Sells.Find(x => x.Id == id);
-            if (sell == null) return false;
-            _Sells.Remove(sell);
-            _Sells.Add(s);
+            int sell = Data.DataContextManager.Lists._SellsList.FindIndex(x => x.Id == id);
+            if (sell == -1) return false;
+            Data.DataContextManager.Lists._SellsList[sell] = s;
             return true;
         }
     }

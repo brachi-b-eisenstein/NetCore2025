@@ -2,38 +2,36 @@
 {
     public class ProductOnSellService
     {
-        static readonly List<Entities.ProductOnSell> _ProductsOnSell = new List<Entities.ProductOnSell>();
         public List<Entities.ProductOnSell> GetService()
         {
-            return _ProductsOnSell;
+            return Data.DataContextManager.Lists._ProductsOnSellList;
         }
         public Entities.ProductOnSell GetByIdService(int id)
         {
             Entities.ProductOnSell product;
-            product = _ProductsOnSell.Find(x => x.Id == id);
+            product = Data.DataContextManager.Lists._ProductsOnSellList.Find(x => x.Id == id);
             return product;
         }
-        public bool PostService(Entities.ProductOnSell product)
+        public bool AddProductToSell(Entities.ProductOnSell product)
         {
-            _ProductsOnSell.Add(product);
-            if (_ProductsOnSell.Find(x => x.Id == product.Id) != null)
+            Data.DataContextManager.Lists._ProductsOnSellList.Add(product);
+            if (Data.DataContextManager.Lists._ProductsOnSellList.Find(x => x.Id == product.Id) != null)
                 return true;
             return false;
         }
         public bool DeleteByIdService(int id)
         {
-            if (_ProductsOnSell == null) return false;
-            Entities.ProductOnSell product = _ProductsOnSell.Find(x => x.Id == id);
+            if (Data.DataContextManager.Lists._ProductsOnSellList == null) return false;
+            Entities.ProductOnSell product = Data.DataContextManager.Lists._ProductsOnSellList.Find(x => x.Id == id);
             if (product == null) return false;
-            _ProductsOnSell.Remove(product);
+            Data.DataContextManager.Lists._ProductsOnSellList.Remove(product);
             return true;
         }
-        public bool PutService(int id, Entities.ProductOnSell p)
+        public bool UpdateProductOnSell(int id, Entities.ProductOnSell p)
         {
-            Entities.ProductOnSell product = _ProductsOnSell.Find(x => x.Id == id);
-            if (product == null) return false;
-            _ProductsOnSell.Remove(product);
-            _ProductsOnSell.Add(p);
+            int product = Data.DataContextManager.Lists._ProductsOnSellList.FindIndex(x => x.Id == id);
+            if (product == -1) return false;
+            Data.DataContextManager.Lists._ProductsOnSellList[product]=p;
             return true;
         }
     }

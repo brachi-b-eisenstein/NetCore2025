@@ -11,20 +11,17 @@ namespace MishnatYosef.Controllers
         static Services.OrderService _Orders = new Services.OrderService();
         // GET: api/<OrderController>
         [HttpGet]
-        public ActionResult<List<Entities.Order>> Get()
+        public ActionResult Get()
         {
-            List<Entities.Order> orders = _Orders.GetService();
-            if (orders == null)
-            {
-                return NotFound();
-            }
+            var orders = _Orders.GetService();
             return Ok(orders);
         }
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public ActionResult<Entities.Order> Get(int id)
+        public ActionResult Get(int id)
         {
+            if (id < 0) return BadRequest();
             Entities.Order order = _Orders.GetByIdService(id);
             if (order == null) { return NotFound(); }
             return Ok(order);
@@ -32,25 +29,25 @@ namespace MishnatYosef.Controllers
 
         // POST api/<CustomerController>
         [HttpPost]
-        public ActionResult<int> Post([FromBody] Entities.Order value)
+        public ActionResult Post([FromBody] Entities.Order value)
         {
-            if (_Orders.PostService(value))
-                return Ok(true);
+            if (_Orders.AddOrder(value))
+                return Ok(true);    
             return Ok(false);
         }
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public ActionResult<int> Put(int id, [FromBody] Entities.Order o)
+        public ActionResult Put(int id, [FromBody] Entities.Order o)
         {
-            if (_Orders.PutService(id, o))
+            if (_Orders.UpdateOrder(id, o))
                 return Ok(true);
             return Ok(false);
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public ActionResult<int> Delete(int id)
+        public ActionResult Delete(int id)
         {
             if (_Orders.DeleteByIdService(id))
                 return Ok(true);

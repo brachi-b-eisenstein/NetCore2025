@@ -12,20 +12,17 @@ namespace MishnatYosef.Controllers
         static Services.SellService _Sell = new Services.SellService();
         // GET: api/<SellController>
         [HttpGet]
-        public ActionResult<List<Entities.Sell>> Get()
+        public ActionResult Get()
         {
             List<Entities.Sell> sells = _Sell.GetService();
-            if (sells == null)
-            {
-                return NotFound();
-            }
             return Ok(sells);
         }
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public ActionResult<Entities.Sell> Get(int id)
+        public ActionResult Get(int id)
         {
+            if (id < 0) return BadRequest();
             Entities.Sell sell = _Sell.GetByIdService(id);
             if (sell == null) { return NotFound(); }
             return Ok(sell);
@@ -33,25 +30,25 @@ namespace MishnatYosef.Controllers
 
         // POST api/<CustomerController>
         [HttpPost]
-        public ActionResult<int> Post([FromBody] Entities.Sell value)
+        public ActionResult Post([FromBody] Entities.Sell value)
         {
-            if (_Sell.PostService(value))
+            if (_Sell.AddSell(value))
                 return Ok(true);
             return Ok(false);
         }
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public ActionResult<int> Put(int id, [FromBody] Entities.Sell s)
+        public ActionResult Put(int id, [FromBody] Entities.Sell s)
         {
-            if (_Sell.PutService(id, s))
+            if (_Sell.UpdateCustomer(id, s))
                 return Ok(true);
             return Ok(false);
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public ActionResult<int> Delete(int id)
+        public ActionResult<bool> Delete(int id)
         {
             if (_Sell.DeleteByIdService(id))
                 return Ok(true);

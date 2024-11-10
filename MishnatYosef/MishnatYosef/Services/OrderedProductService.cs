@@ -2,38 +2,36 @@
 {
     public class OrderedProductService
     {
-        static readonly List<Entities.OrderedProduct> _OrderedProducts = new List<Entities.OrderedProduct>();
         public List<Entities.OrderedProduct> GetService()
         {
-            return _OrderedProducts;
+            return Data.DataContextManager.Lists._OrderedProductsList;
         }
         public Entities.OrderedProduct GetByIdService(int id)
         {
             Entities.OrderedProduct orderedProduct;
-            orderedProduct = _OrderedProducts.Find(x => x.Id == id);
+            orderedProduct = Data.DataContextManager.Lists._OrderedProductsList.Find(x => x.Id == id);
             return orderedProduct;
         }
-        public bool PostService(Entities.OrderedProduct orderedProduct)
+        public bool OrderProduct(Entities.OrderedProduct orderedProduct)
         {
-            _OrderedProducts.Add(orderedProduct);
-            if (_OrderedProducts.Find(x => x.Id == orderedProduct.Id) != null)
+            Data.DataContextManager.Lists._OrderedProductsList.Add(orderedProduct);
+            if (Data.DataContextManager.Lists._OrderedProductsList.Find(x => x.Id == orderedProduct.Id) != null)
                 return true;
             return false;
         }
         public bool DeleteByIdService(int id)
         {
-            if (_OrderedProducts == null) return false;
-            Entities.OrderedProduct orderedProduct = _OrderedProducts.Find(x => x.Id == id);
+            if (Data.DataContextManager.Lists._OrderedProductsList == null) return false;
+            Entities.OrderedProduct orderedProduct = Data.DataContextManager.Lists._OrderedProductsList.Find(x => x.Id == id);
             if (orderedProduct == null) return false;
-            _OrderedProducts.Remove(orderedProduct);
+            Data.DataContextManager.Lists._OrderedProductsList.Remove(orderedProduct);
             return true;
         }
-        public bool PutService(int id, Entities.OrderedProduct o)
+        public bool UpdateOrderedProduct(int id, Entities.OrderedProduct o)
         {
-            Entities.OrderedProduct orderedProduct = _OrderedProducts.Find(x => x.Id == id);
-            if (orderedProduct == null) return false;
-            _OrderedProducts.Remove(orderedProduct);
-            _OrderedProducts.Add(o);
+            int orderedProduct = Data.DataContextManager.Lists._OrderedProductsList.FindIndex(x => x.Id == id);
+            if (orderedProduct == -1) return false;
+            Data.DataContextManager.Lists._OrderedProductsList[orderedProduct]=o;
             return true;
         }
     }

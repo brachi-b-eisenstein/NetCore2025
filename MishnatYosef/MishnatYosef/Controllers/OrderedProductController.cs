@@ -12,20 +12,17 @@ namespace MishnatYosef.Controllers
         static Services.OrderedProductService _OrderProducts = new Services.OrderedProductService();
         // GET: api/<OrderedProductController>
         [HttpGet]
-        public ActionResult<List<Entities.OrderedProduct>> Get()
+        public ActionResult Get()
         {
             List<Entities.OrderedProduct> orderedProducts = _OrderProducts.GetService();
-            if (orderedProducts == null)
-            {
-                return NotFound();
-            }
             return Ok(orderedProducts);
         }
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public ActionResult<Entities.OrderedProduct> Get(int id)
+        public ActionResult Get(int id)
         {
+            if (id < 0) return BadRequest();
             Entities.OrderedProduct orderedProduct = _OrderProducts.GetByIdService(id);
             if (orderedProduct == null) { return NotFound(); }
             return Ok(orderedProduct);
@@ -33,25 +30,25 @@ namespace MishnatYosef.Controllers
 
         // POST api/<CustomerController>
         [HttpPost]
-        public ActionResult<int> Post([FromBody] Entities.OrderedProduct value)
+        public ActionResult Post([FromBody] Entities.OrderedProduct value)
         {
-            if (_OrderProducts.PostService(value))
+            if (_OrderProducts.OrderProduct(value))
                 return Ok(true);
             return Ok(false);
         }
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public ActionResult<int> Put(int id, [FromBody] Entities.OrderedProduct o)
+        public ActionResult Put(int id, [FromBody] Entities.OrderedProduct o)
         {
-            if (_OrderProducts.PutService(id, o))
+            if (_OrderProducts.UpdateOrderedProduct(id, o))
                 return Ok(true);
             return Ok(false);
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public ActionResult<int> Delete(int id)
+        public ActionResult Delete(int id)
         {
             if (_OrderProducts.DeleteByIdService(id))
                 return Ok(true);

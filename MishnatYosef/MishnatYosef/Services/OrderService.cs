@@ -2,38 +2,36 @@
 {
     public class OrderService
     {
-        static readonly List<Entities.Order> _Orders = new List<Entities.Order>();
         public List<Entities.Order> GetService()
         {
-            return _Orders;
+            return Data.DataContextManager.Lists._OrdersList;
         }
         public Entities.Order GetByIdService(int id)
         {
             Entities.Order order;
-            order = _Orders.Find(x => x.Id == id);
+            order = Data.DataContextManager.Lists._OrdersList.Find(x => x.Id == id);
             return order;
         }
-        public bool PostService(Entities.Order order)
+        public bool AddOrder(Entities.Order order)
         {
-            _Orders.Add(order);
-            if (_Orders.Find(x => x.Id ==order.Id ) != null)
+            Data.DataContextManager.Lists._OrdersList.Add(order);
+            if (Data.DataContextManager.Lists._OrdersList.Find(x => x.Id ==order.Id ) != null)
                 return true;
             return false;
         }
         public bool DeleteByIdService(int id)
         {
-            if (_Orders == null) return false;
-            Entities.Order order = _Orders.Find(x => x.Id == id);
+            if (Data.DataContextManager.Lists._OrdersList == null) return false;
+            Entities.Order order = Data.DataContextManager.Lists._OrdersList.Find(x => x.Id == id);
             if (order == null) return false;
-            _Orders.Remove(order);
+            Data.DataContextManager.Lists._OrdersList.Remove(order);
             return true;
         }
-        public bool PutService(int id, Entities.Order o)
+        public bool UpdateOrder(int id, Entities.Order o)
         {
-            Entities.Order order = _Orders.Find(x => x.Id == id);
-            if (order == null) return false;
-            _Orders.Remove(order);
-            _Orders.Add(o);
+            int order = Data.DataContextManager.Lists._OrdersList.FindIndex(x => x.Id == id);
+            if (order == -1) return false;
+            Data.DataContextManager.Lists._OrdersList[order]=o;
             return true;
         }
     }

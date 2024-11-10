@@ -4,38 +4,37 @@ namespace MishnatYosef.Services
 {
     public class CustomerService
     {
-        static readonly List<Entities.Customer> _CustomersList= new List<Entities.Customer>();
         public List<Entities.Customer> GetService()
         {
-            return _CustomersList;
+            Console.WriteLine(Data.DataContextManager.Lists._CustomerList.Count());
+            return Data.DataContextManager.Lists._CustomerList;
         }
         public Entities.Customer GetByIdService(int id)
         {
-            Entities.Customer customer = null;
-            customer = _CustomersList.Find(x => x.Id == id);
+            Entities.Customer customer;
+            customer = Data.DataContextManager.Lists._CustomerList.Find(x => x.Id == id);
             return customer;
         }
-        public bool PostService(Entities.Customer customer)
+        public bool AddCustomer(Entities.Customer customer)
         {
-            _CustomersList.Add(customer);
-            if(_CustomersList.Find(x => x.Id == customer.Id)!=null)
+            Data.DataContextManager.Lists._CustomerList.Add(customer);
+            if(Data.DataContextManager.Lists._CustomerList.Find(x => x.Id == customer.Id)!=null)
                 return true;
             return false;
         }
         public bool DeleteByIdService(int id)
         {
-            if(_CustomersList==null) return false;
-            Entities.Customer customer = _CustomersList.Find(x => x.Id == id);
+            if(Data.DataContextManager.Lists._CustomerList == null) return false;
+            Entities.Customer customer = Data.DataContextManager.Lists._CustomerList.Find(x => x.Id == id);
             if(customer==null) return false;
-            _CustomersList.Remove(customer);
+            Data.DataContextManager.Lists._CustomerList.Remove(customer);
             return true;
         }
-        public bool PutService(int id,Entities.Customer c)
+        public bool UpdateCustomer(int id,Entities.Customer c)
         {
-            Entities.Customer customer = _CustomersList.Find(x => x.Id == id);
-            if (customer == null) return false;
-            _CustomersList.Remove(customer);
-            _CustomersList.Add(c);
+            int customer = Data.DataContextManager.Lists._CustomerList.FindIndex(x => x.Id == id);
+            if (customer == null) return false;             
+            Data.DataContextManager.Lists._CustomerList[customer]=c;
             return true;
         }
 
